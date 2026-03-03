@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>日報タスク分析ツール v1.1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="task_analyzer_v1.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-inner">
+      <div class="app-header-main">
+        <div class="app-header-title-block">
+          <h1>日報タスク分析ツール</h1>
+          <p class="app-header-subtitle">日報から「自分のタスクの見える化」と「完了率の感触」をすぐに確認できます。</p>
+        </div>
+        <div class="app-header-meta">
+          <div class="meta-pill">v1.1</div>
+          <div class="meta-pill meta-pill-soft">for Daily Report Template</div>
+        </div>
+      </div>
+      <div class="app-header-hint">
+        <span class="hint-badge">How to</span>
+        <span class="hint-text">左に日報テキストを貼り付けて「解析する」を押すだけで、右側にタスク一覧と完了状況が並びます。</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="panel panel-input">
+      <div class="panel-header">
+        <h2 class="panel-title">1. 日報テキストを貼り付け</h2>
+        <p class="panel-tag">Input</p>
+      </div>
+      <p class="panel-description">
+        日報テンプレに沿ったテキスト（1日分でも複数日分でもOK）を、このテキストエリアに貼り付けてください。
+        特に「### 2) 今日やったこと」配下の箇条書きからタスクを抽出します。
+      </p>
+      <textarea id="report-input" class="report-input" rows="18" placeholder="- **日付**: 2026-03-03（火）
+- **氏名 / チーム**: 山田太郎 / プロダクト開発
+
+### 2) 今日やったこと（事実ベース）
+- **(A) 仕様整理タスク**: 新機能Xの要件整理と既存仕様との差分を整理（完了）
+  - **成果**: Notionに仕様ページ作成、レビュー依頼済み
+- **(B) コーディング**: APIエンドポイントの実装とテストコード作成（進行中）
+  - **成果**: PR #123 作成、ユニットテスト8件追加"></textarea>
+
+      <div class="panel-actions">
+        <button id="analyze-button" class="primary-button">
+          <span class="button-icon">▶</span>
+          <span>解析する</span>
+        </button>
+        <button id="clear-button" class="secondary-button">
+          <span>クリア</span>
+        </button>
+        <div class="panel-actions-note">
+          貼り付けた日報はブラウザ内だけで処理されます。サーバ送信は行いません。
+        </div>
+      </div>
+    </section>
+
+    <section class="panel panel-result">
+      <div class="panel-header">
+        <h2 class="panel-title">2. 解析結果</h2>
+        <p class="panel-tag panel-tag-secondary">Overview</p>
+      </div>
+
+      <div id="summary" class="summary-cards">
+        <!-- 集計サマリがここに表示されます -->
+      </div>
+
+      <div id="tasks-container" class="tasks-container">
+        <div class="tasks-table-wrapper">
+          <table class="tasks-table">
+            <thead>
+              <tr>
+                <th>日付</th>
+                <th>ラベル</th>
+                <th>ステータス</th>
+                <th>内容</th>
+              </tr>
+            </thead>
+            <tbody id="tasks-body">
+              <!-- タスク一覧がここに表示されます -->
+            </tbody>
+          </table>
+        </div>
+        <p id="no-tasks-message" class="no-tasks-message">
+          まだタスクが抽出されていません。左側に日報テキストを貼り付けて「解析する」を押してください。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="app-footer-inner">
+      <p class="footer-text-main">日報テンプレの「### 2) 今日やったこと」配下の行（例: <code>- **(A) タスク名**: 説明</code>）からタスク情報を抽出しています。</p>
+      <p class="footer-text-sub">完了 / 進行中 などのキーワードから、ざっくりとしたステータスも自動判定します。</p>
+    </div>
+  </footer>
+
+  <script src="task_analyzer_v1.js"></script>
+</body>
+</html>
+
